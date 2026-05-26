@@ -3,12 +3,16 @@ const express = require('express');
 const router = express.Router();
 
 const {
-  listarCitas,
-  obtenerCita,
-  reprogramarCita,
-  cancelarCita,
-  calificarCita
+    registrarCita,
+    listarCitas,
+    obtenerCita,
+    reprogramarCita,
+    cancelarCita,
+    calificarCita
 } = require('../controllers/citas.controller');
+
+/* REGISTRAR CITA */
+router.post('/', registrarCita);
 
 /* LISTAR CITAS */
 router.get('/', listarCitas);

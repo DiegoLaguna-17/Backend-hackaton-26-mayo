@@ -1,5 +1,52 @@
 const supabase = require('../config/supabase');
 
+/* REGISTRAR CITA */
+const registrarCita = async (req, res) => {
+
+    try {
+
+        const {
+            id_paciente,
+            id_medico,
+            fecha_cita,
+            hora_cita,
+            motivo_consulta
+        } = req.body;
+
+        const { data, error } = await supabase
+        .from('citas')
+        .insert([
+            {
+                id_paciente,
+                id_medico,
+                fecha_cita,
+                hora_cita,
+                motivo_consulta,
+                estado: 'PENDIENTE'
+            }
+        ])
+        .select();
+
+        if (error) {
+            throw error;
+        }
+
+        res.status(201).json({
+            mensaje: 'Cita registrada correctamente',
+            data
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            mensaje: 'Error registrando cita',
+            error: error.message
+        });
+
+    }
+
+};
+
 /* LISTAR CITAS */
 const listarCitas = async (req, res) => {
 
@@ -10,7 +57,7 @@ const listarCitas = async (req, res) => {
         .select('*');
 
         if (error) {
-        throw error;
+            throw error;
         }
 
         res.status(200).json(data);
@@ -18,8 +65,8 @@ const listarCitas = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-        mensaje: 'Error al listar citas',
-        error: error.message
+            mensaje: 'Error al listar citas',
+            error: error.message
         });
 
     }
@@ -40,7 +87,7 @@ const obtenerCita = async (req, res) => {
         .single();
 
         if (error) {
-        throw error;
+            throw error;
         }
 
         res.status(200).json(data);
@@ -48,8 +95,8 @@ const obtenerCita = async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-        mensaje: 'Error obteniendo cita',
-        error: error.message
+            mensaje: 'Error obteniendo cita',
+            error: error.message
         });
 
     }
@@ -64,8 +111,8 @@ const reprogramarCita = async (req, res) => {
         const { id } = req.params;
 
         const {
-        fecha_cita,
-        hora_cita
+            fecha_cita,
+            hora_cita
         } = req.body;
 
         const { data, error } = await supabase
@@ -79,19 +126,19 @@ const reprogramarCita = async (req, res) => {
         .select();
 
         if (error) {
-        throw error;
+            throw error;
         }
 
         res.status(200).json({
-        mensaje: 'Cita reprogramada correctamente',
-        data
+            mensaje: 'Cita reprogramada correctamente',
+            data
         });
 
     } catch (error) {
 
         res.status(500).json({
-        mensaje: 'Error reprogramando cita',
-        error: error.message
+            mensaje: 'Error reprogramando cita',
+            error: error.message
         });
 
     }
@@ -103,9 +150,9 @@ const cancelarCita = async (req, res) => {
 
     try {
 
-    const { id } = req.params;
+        const { id } = req.params;
 
-    const { data, error } = await supabase
+        const { data, error } = await supabase
         .from('citas')
         .update({
             estado: 'CANCELADA',
@@ -115,19 +162,19 @@ const cancelarCita = async (req, res) => {
         .select();
 
         if (error) {
-        throw error;
+            throw error;
         }
 
         res.status(200).json({
-        mensaje: 'Cita cancelada correctamente',
-        data
+            mensaje: 'Cita cancelada correctamente',
+            data
         });
 
     } catch (error) {
 
         res.status(500).json({
-        mensaje: 'Error cancelando cita',
-        error: error.message
+            mensaje: 'Error cancelando cita',
+            error: error.message
         });
 
     }
@@ -145,9 +192,9 @@ const calificarCita = async (req, res) => {
 
         if (puntuacion < 1 || puntuacion > 5) {
 
-        return res.status(400).json({
-            mensaje: 'La puntuación debe ser entre 1 y 5'
-        });
+            return res.status(400).json({
+                mensaje: 'La puntuación debe ser entre 1 y 5'
+            });
 
         }
 
@@ -161,19 +208,19 @@ const calificarCita = async (req, res) => {
         .select();
 
         if (error) {
-        throw error;
+            throw error;
         }
 
         res.status(200).json({
-        mensaje: 'Atención calificada correctamente',
-        data
+            mensaje: 'Atención calificada correctamente',
+            data
         });
 
     } catch (error) {
 
         res.status(500).json({
-        mensaje: 'Error calificando cita',
-        error: error.message
+            mensaje: 'Error calificando cita',
+            error: error.message
         });
 
     }
@@ -181,6 +228,7 @@ const calificarCita = async (req, res) => {
 };
 
 module.exports = {
+    registrarCita,
     listarCitas,
     obtenerCita,
     reprogramarCita,
