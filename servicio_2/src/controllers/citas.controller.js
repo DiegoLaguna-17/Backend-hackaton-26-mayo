@@ -24,10 +24,10 @@ const listarCitas = async (req, res) => {
 
     }
 
-    };
+};
 
-    /* OBTENER CITA POR ID */
-    const obtenerCita = async (req, res) => {
+/* OBTENER CITA POR ID */
+const obtenerCita = async (req, res) => {
 
     try {
 
@@ -54,10 +54,10 @@ const listarCitas = async (req, res) => {
 
     }
 
-    };
+};
 
-    /* REPROGRAMAR CITA */
-    const reprogramarCita = async (req, res) => {
+/* REPROGRAMAR CITA */
+const reprogramarCita = async (req, res) => {
 
     try {
 
@@ -96,16 +96,16 @@ const listarCitas = async (req, res) => {
 
     }
 
-    };
+};
 
-    /* CANCELAR CITA */
-    const cancelarCita = async (req, res) => {
+/* CANCELAR CITA */
+const cancelarCita = async (req, res) => {
 
     try {
 
-        const { id } = req.params;
+    const { id } = req.params;
 
-        const { data, error } = await supabase
+    const { data, error } = await supabase
         .from('citas')
         .update({
             estado: 'CANCELADA',
@@ -134,9 +134,56 @@ const listarCitas = async (req, res) => {
 
 };
 
+/* CALIFICAR CITA */
+const calificarCita = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const { puntuacion } = req.body;
+
+        if (puntuacion < 1 || puntuacion > 5) {
+
+        return res.status(400).json({
+            mensaje: 'La puntuación debe ser entre 1 y 5'
+        });
+
+        }
+
+        const { data, error } = await supabase
+        .from('citas')
+        .update({
+            puntuacion,
+            fecha_actualizacion: new Date()
+        })
+        .eq('id', id)
+        .select();
+
+        if (error) {
+        throw error;
+        }
+
+        res.status(200).json({
+        mensaje: 'Atención calificada correctamente',
+        data
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+        mensaje: 'Error calificando cita',
+        error: error.message
+        });
+
+    }
+
+};
+
 module.exports = {
     listarCitas,
     obtenerCita,
     reprogramarCita,
-    cancelarCita
+    cancelarCita,
+    calificarCita
 };
