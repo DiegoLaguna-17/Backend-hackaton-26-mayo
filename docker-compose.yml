@@ -1,0 +1,71 @@
+
+
+services:
+  gateway:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - servicio_1
+      - servicio_2
+      - servicio_3
+      - servicio_4
+      - servicio_5
+    networks:
+      - microservices_net
+
+  servicio_1:
+    build:
+      context: ./servicio_1
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./servicio_1/.env
+    networks:
+      - microservices_net
+
+  servicio_2:
+    build:
+      context: ./servicio_2
+    ports:
+      - "3002:3002"
+    env_file:
+      - ./servicio_2/.env
+    networks:
+      - microservices_net
+
+  servicio_3:
+    build:
+      context: ./servicio_3
+    ports:
+      - "3003:3003"
+    env_file:
+      - ./servicio_3/.env
+    networks:
+      - microservices_net
+
+  servicio_4:
+    build:
+      context: ./servicio_4
+    ports:
+      - "3004:3004"
+    env_file:
+      - ./servicio_4/.env
+    networks:
+      - microservices_net
+
+  servicio_5:
+    build:
+      context: ./servicio_5
+    ports:
+      - "3005:3005"
+    env_file:
+      - ./servicio_5/.env
+    networks:
+      - microservices_net
+
+networks:
+  microservices_net:
+    driver: bridge

@@ -1,0 +1,20 @@
+# dependencias
+node_modules/
+
+# logs
+*.log
+
+# envs
+.env
+**/.env
+
+# docker
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes (opcional)
+*.tar
