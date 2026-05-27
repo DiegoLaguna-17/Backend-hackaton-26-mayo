@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3002;
 app.use(express.json());
 
 /* HEALTH CHECK */
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
 
   res.status(200).json({
     status: 'OK',
@@ -20,8 +20,8 @@ app.get('/health', (req, res) => {
 
 });
 
-/* RUTAS */
-app.use('/citas', citasRoutes);
+/* RUTAS API */
+app.use('/api/citas', citasRoutes);
 
 app.listen(PORT, () => {
 
