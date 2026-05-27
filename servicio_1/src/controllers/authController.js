@@ -377,6 +377,71 @@ const registrarAuditor = async (req, res) => {
   }
 };
 
+
+
+
+const obtenerMedicos = async (req, res) => {
+  try {
+    // Hace un JOIN implícito con la tabla usuarios para traer el nombre
+    const { data, error } = await supabase
+      .from('medicos')
+      .select(`
+        numero_licencia,
+        especialidad,
+        institucion,
+        usuarios (nombre, correo)
+      `);
+      
+    if (error) throw error;
+    return res.status(200).json({ success: true, medicos: data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Error al obtener médicos' });
+  }
+};
+
+
+const obtenerFarmacias = async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('farmacias').select('*');
+    if (error) throw error;
+    return res.status(200).json({ success: true, farmacias: data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Error al obtener farmacias' });
+  }
+};
+
+const obtenerPacientePorCI = async (req, res) => {
+  try {
+    const { ci } = req.params; 
+
+    if (!ci) {
+      return res.status(400).json({ success: false, message: 'El CI es requerido' });
+    }
+
+  
+    const { data, error } = await supabase
+      .from('pacientes')
+      .select(`
+        ci,
+        genero,
+        tipo_sangre,
+        telefono,
+        usuarios (nombre, correo, fecha_nac)
+      `)
+      .eq('ci', ci)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ success: false, message: 'Paciente no encontrado en el sistema' });
+    }
+
+    return res.status(200).json({ success: true, paciente: data });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Error interno del servidor', error: error.message });
+  }
+};
+
+
 module.exports = {
   registrarPaciente,
   login,
@@ -386,7 +451,10 @@ module.exports = {
   registrarFarmacia,
   registrarPersonalFarmacia,
   registrarPersonalSalud,
-  registrarAuditor
+  registrarAuditor,
+  obtenerMedicos,
+  obtenerFarmacias,
+  obtenerPacientePorCI
 };
 
 
