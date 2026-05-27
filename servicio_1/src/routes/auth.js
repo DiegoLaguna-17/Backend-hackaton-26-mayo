@@ -14,4 +14,12 @@ router.post('/registrar/personal/farmacia',authController.registrarPersonalFarma
 router.post('/registrar/personal/salud',authController.registrarPersonalSalud)
 router.post('/registrar/auditor',authController.registrarAuditor)
 
+
+router.get('/obtener/medicos',authController.obtenerMedicos)
+router.get('/obtener/farmacias',authController.obtenerMedicos)
+router.get('/obtener/paciente/:ci',authController.obtenerPacientePorCI)
+
+
+
+
 module.exports = router;
