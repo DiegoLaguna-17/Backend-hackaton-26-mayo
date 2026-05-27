@@ -8,7 +8,7 @@ const {
     obtenerCita,
     reprogramarCita,
     cancelarCita,
-    calificarCita
+    puntuarCita
 } = require('../controllers/citas.controller');
 
 /* REGISTRAR CITA */
@@ -26,7 +26,7 @@ router.put('/:id', reprogramarCita);
 /* CANCELAR CITA */
 router.delete('/:id', cancelarCita);
 
-/* CALIFICAR CITA */
-router.put('/:id/calificar', calificarCita);
+/* PUNTUAR CITA */
+router.put('/:id/puntuar', puntuarCita);
 
 module.exports = router;

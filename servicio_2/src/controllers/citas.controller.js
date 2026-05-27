@@ -181,8 +181,8 @@ const cancelarCita = async (req, res) => {
 
 };
 
-/* CALIFICAR CITA */
-const calificarCita = async (req, res) => {
+/* PUNTUAR CITA */
+const puntuarCita = async (req, res) => {
 
     try {
 
@@ -212,14 +212,14 @@ const calificarCita = async (req, res) => {
         }
 
         res.status(200).json({
-            mensaje: 'Atención calificada correctamente',
+            mensaje: 'Cita puntuada correctamente',
             data
         });
 
     } catch (error) {
 
         res.status(500).json({
-            mensaje: 'Error calificando cita',
+            mensaje: 'Error puntuando cita',
             error: error.message
         });
 
@@ -233,5 +233,5 @@ module.exports = {
     obtenerCita,
     reprogramarCita,
     cancelarCita,
-    calificarCita
+    puntuarCita
 };
